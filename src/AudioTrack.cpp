@@ -36,15 +36,28 @@ AudioTrack::~AudioTrack() {
     std::cout << "AudioTrack destructor called for: " << title << std::endl;
     #endif
     // Your code here...
+    delete[] waveform_data;
+    waveform_data = nullptr;
 }
 
 AudioTrack::AudioTrack(const AudioTrack& other)
+:   title(other.title),
+    artists(other.artists),
+    duration_seconds(other.duration_seconds),
+    bpm(other.bpm),
+    waveform_size(other.waveform_size)
 {
     // TODO: Implement the copy constructor
     #ifdef DEBUG
     std::cout << "AudioTrack copy constructor called for: " << other.title << std::endl;
     #endif
     // Your code here...
+    if(waveform_size > 0){
+        waveform_data = new double[waveform_size];
+        std::memcpy(waveform_data, other.waveform_data, waveform_size * sizeof(double));
+    } else {
+        waveform_data = nullptr;
+    }
 }
 
 AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
