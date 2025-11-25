@@ -23,17 +23,17 @@ int DJControllerService::loadTrackToCache(AudioTrack &track)
     // MISS case
     PointerWrapper<AudioTrack> clonedTrackPtr = track.clone(); // validate (DEL)
 
-    if (clonedTrackPtr)
+    if (!clonedTrackPtr)
     {
-        std::cerr << "error occurred while accessing the cloned track\n"; // which error to log (DEL)
-        return;
+        std::cerr << "[ERROR] Track: " << track.get_title() << " failed to clone"; // which error to log (DEL)
+        return 0;
     }
 
     clonedTrackPtr->load();
     clonedTrackPtr->analyze_beatgrid();
 
-    bool putStatus = cache.put(std::move(clonedTrackPtr));
-    return putStatus ? -1 : 0;
+    bool evicted = cache.put(std::move(clonedTrackPtr));
+    return evicted ? -1 : 0;
 }
 
 void DJControllerService::set_cache_size(size_t new_size)
