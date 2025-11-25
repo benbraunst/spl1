@@ -34,7 +34,15 @@ MixingEngineService::~MixingEngineService()
  */
 int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 {
-    // Your implementation here
+    if(!decks[0] && !decks[1]){
+        AudioTrack* clonePtr = track.clone().release();
+        clonePtr->load();
+        decks[0] = clonePtr;
+        active_deck = 0;
+    }
+    else{ // Continue from here (DEL)
+
+    }
     return -1; // Placeholder
 }
 
