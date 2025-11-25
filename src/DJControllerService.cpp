@@ -54,5 +54,11 @@ void DJControllerService::displayCacheStatus() const
 AudioTrack *DJControllerService::getTrackFromCache(const std::string &track_title)
 {
     // Your implementation here
-    return nullptr; // Placeholder
+
+    AudioTrack *trackPointer = cache.get(track_title); // nothing related to PointerWrapper? (DEL)
+    if (trackPointer == nullptr)
+    {
+        std::cerr << "[ERROR] Track: " << track_title << " faile to clone"; // which error to log (DEL)
+    }
+    return trackPointer;
 }
