@@ -23,19 +23,19 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> 
         {
             library.push_back(new MP3Track(track.title, track.artists, track.duration_seconds,
                                            track.bpm, track.extra_param1, track.extra_param2));
-            std::cout << "MP3Track created: " << track.extra_param1 << "kbps";
+            std::cout << "MP3Track created: " << track.extra_param1 << "kbps\n";
             counter++;
         }
         else if (track.type == "WAV")
         {
             library.push_back(new WAVTrack(track.title, track.artists, track.duration_seconds,
                                            track.bpm, track.extra_param1, track.extra_param2));
-            std::cout << "WAVTrack created: " << track.extra_param1 << "Hz/" << track.extra_param2 << "bit";
+            std::cout << "WAVTrack created: " << track.extra_param1 << "Hz/" << track.extra_param2 << "bit\n";
             counter++;
         }
     }
 
-    std::cout << " [INFO] Track library built: " << counter << " tracks loaded";
+    std::cout << " [INFO] Track library built: " << counter << " tracks loaded\n";
 }
 
 /**
@@ -85,38 +85,36 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
 {
     // Your implementation here
 
-    std::cout << "[INFO] Loading playlist: " << playlist_name;
-    Playlist *playlist = new Playlist(playlist_name);
+    std::cout << "[INFO] Loading playlist: " << playlist_name << "\n";
 
     int counter = 0;
 
     for (int index : track_indices)
     {
-        if (index < library.size() && index >= 1)
-        { // Validate index base (DEL)
+        if (index > library.size() || index < 1)
+        {
+            std::cout << "[WARNING] Invalid track index: " << index << "\n";
+        }
+        else{
             PointerWrapper<AudioTrack> track = library[index - 1]->clone();
             if (!track)
             {
-                std::cerr << "[ERROR] error while cloning track";
+                std::cerr << "[ERROR] Track failed to clone\n";
             }
             else
             {
+                track->load();
+                track->analyze_beatgrid();
                 AudioTrack *raw_track = track.release();
-                raw_track->load();
-                raw_track->analyze_beatgrid();
 
-                playlist->add_track(raw_track);
+                playlist.add_track(raw_track);
 
-                std::cout << "Added ’" << raw_track->get_title() << "’ to playlist ’" << playlist_name << "'";
+                std::cout << "Added '" << raw_track->get_title() << "' to playlist '" << playlist_name << "'\n";
                 counter++;
             }
         }
-        else
-        {
-            std::cout << "[WARNING] Invalid track index: " << index;
-        }
     }
-    std::cout << "[INFO] Playlist loaded:" << playlist_name << " (" << counter << " tracks)";
+    std::cout << "[INFO] Playlist loaded: " << playlist_name << " (" << counter << " tracks)\n";
 
     // For now, add a placeholder to fix the linker error
     (void)playlist_name; // Suppress unused parameter warning
@@ -130,12 +128,12 @@ std::vector<std::string> DJLibraryService::getTrackTitles() const
 {
      // check the * common solution (DEL)
     std::vector<AudioTrack*> tracks = playlist.getTracks();
-    std::vector<std::string>* track_titles = new std::vector<std::string>();
+    std::vector<std::string> titles;
+    titles.reserve(tracks.size());
 
     for (AudioTrack* track: tracks){
-        track_titles->push_back(track->get_title());
+        titles.push_back(track->get_title());
     }
 
-    // Your implementation here
-    return *track_titles; // Placeholder
+    return titles; 
 }
