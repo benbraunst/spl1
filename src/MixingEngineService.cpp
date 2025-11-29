@@ -1,6 +1,7 @@
 #include "MixingEngineService.h"
 #include <iostream>
 #include <memory>
+#include <cmath>
 
 /**
  * TODO: Implement MixingEngineService constructor
@@ -134,8 +135,12 @@ bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack> &track
         return false;
     }
 
+    int active_deck_bpm = decks[active_deck]->get_bpm();
+    int track_bpm = track->get_bpm();
+    int bpm_difference = std::abs(active_deck_bpm - track_bpm);
+
     // Your implementation here
-    return false; // Placeholder
+    return bpm_difference <= bpm_tolerance;
 }
 
 /**
