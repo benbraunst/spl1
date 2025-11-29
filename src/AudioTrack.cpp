@@ -103,8 +103,9 @@ AudioTrack::AudioTrack(AudioTrack &&other) noexcept
       artists(std::move(other.artists)),
       duration_seconds(other.duration_seconds),
       bpm(other.bpm),
-      waveform_size(other.waveform_size),
-      waveform_data(other.waveform_data)
+      waveform_data(other.waveform_data),
+      waveform_size(other.waveform_size)
+      
 {
 // TODO: Implement the move constructor
 #ifdef DEBUG
