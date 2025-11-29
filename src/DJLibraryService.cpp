@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <filesystem>
+#include <vector>
 
 DJLibraryService::DJLibraryService(const Playlist &playlist)
     : playlist(playlist), library() {}
@@ -127,6 +128,14 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
  */
 std::vector<std::string> DJLibraryService::getTrackTitles() const
 {
+     // check the * common solution (DEL)
+    std::vector<AudioTrack*> tracks = playlist.getTracks();
+    std::vector<std::string>* track_titles = new std::vector<std::string>();
+
+    for (AudioTrack* track: tracks){
+        track_titles->push_back(track->get_title());
+    }
+
     // Your implementation here
-    return std::vector<std::string>(); // Placeholder
+    return *track_titles; // Placeholder
 }
