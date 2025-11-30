@@ -12,7 +12,7 @@ MixingEngineService::MixingEngineService()
       auto_sync(false),
       bpm_tolerance(0)
 {
-    std::cout << "[MixingEngineService] Initialized with 2 empty decks. \n";
+    std::cout << "[MixingEngineService] Initialized with 2 empty decks.\n";
 }
 
 /**
@@ -20,7 +20,7 @@ MixingEngineService::MixingEngineService()
  */
 MixingEngineService::~MixingEngineService()
 {
-    std::cout << "[MixingEngineService] Cleaning up decks... \n";
+    std::cout << "[MixingEngineService] Cleaning up decks...\n";
     delete decks[0];
     delete decks[1];
 
@@ -141,8 +141,6 @@ bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack> &track
     int active_deck_bpm = decks[active_deck]->get_bpm();
     int track_bpm = track->get_bpm();
     int bpm_difference = std::abs(active_deck_bpm - track_bpm);
-
-    // Your implementation here
     return bpm_difference <= bpm_tolerance;
 }
 

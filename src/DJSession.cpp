@@ -324,7 +324,7 @@ void DJSession::load_selected_playlist(const std::string &selected_playlist)
     {
         for (const auto &title : track_titles)
         {
-            std::cout << "\n-- Processing: " << title << " --\n";
+            std::cout << "\n--- Processing: " << title << " ---\n";
             stats.tracks_processed++;
 
             // – update the cache statistics based on the return value
