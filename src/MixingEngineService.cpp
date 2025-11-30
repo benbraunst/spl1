@@ -50,18 +50,21 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
         return -1;
     }
 
-    clonedTrackPtr->load();
-    clonedTrackPtr->analyze_beatgrid();
-
     size_t target_deck;
     if (!decks[0] && !decks[1])
     {
         target_deck = 0;
+        std::cout << "[Deck Switch] Target deck: " << target_deck << std::endl;
+        clonedTrackPtr->load();
+        clonedTrackPtr->analyze_beatgrid();
     }
     else
     {
         target_deck = 1 - active_deck;
-        std::cout << "[Deck Switch] Target deck: " << target_deck;
+        std::cout << "[Deck Switch] Target deck: " << target_deck << std::endl;
+
+        clonedTrackPtr->load();
+        clonedTrackPtr->analyze_beatgrid();
 
         if (decks[target_deck])
         {
@@ -79,7 +82,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     decks[target_deck] = clonedTrackPtr.release();
 
     std::cout << "[Load Complete] '" << decks[target_deck]->get_title()
-              << "' is now loaded on deck" << target_deck;
+              << "' is now loaded on deck " << target_deck << std::endl;
 
     // (j)
     if (decks[active_deck] != nullptr && active_deck != target_deck)

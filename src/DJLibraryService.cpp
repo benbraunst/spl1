@@ -23,19 +23,17 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> 
         {
             library.push_back(new MP3Track(track.title, track.artists, track.duration_seconds,
                                            track.bpm, track.extra_param1, track.extra_param2));
-            std::cout << "MP3Track created: " << track.extra_param1 << "kbps\n";
             counter++;
         }
         else if (track.type == "WAV")
         {
             library.push_back(new WAVTrack(track.title, track.artists, track.duration_seconds,
                                            track.bpm, track.extra_param1, track.extra_param2));
-            std::cout << "WAVTrack created: " << track.extra_param1 << "Hz/" << track.extra_param2 << "bit\n";
             counter++;
         }
     }
 
-    std::cout << " [INFO] Track library built: " << counter << " tracks loaded\n";
+    std::cout << "[INFO] Track library built: " << counter << " tracks loaded\n";
 }
 
 /**
@@ -86,7 +84,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
     // Your implementation here
 
     std::cout << "[INFO] Loading playlist: " << playlist_name << "\n";
-
+    playlist = *(new Playlist(playlist_name));
     int counter = 0;
 
     for (int index : track_indices)
@@ -108,8 +106,6 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
                 AudioTrack *raw_track = track.release();
 
                 playlist.add_track(raw_track);
-
-                std::cout << "Added '" << raw_track->get_title() << "' to playlist '" << playlist_name << "'\n";
                 counter++;
             }
         }

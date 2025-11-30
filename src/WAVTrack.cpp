@@ -27,19 +27,10 @@ void WAVTrack::load()
 void WAVTrack::analyze_beatgrid()
 {
     std::cout << "[WAVTrack::analyze_beatgrid] Analyzing beat grid for: \"" << title << "\"\n";
-    // TODO: Implement WAV-specific beat detection analysis
-    // Requirements:
-    // 1. Print analysis message with track title
-    // 2. Calculate beats: (duration_seconds / 60.0) * bpm
-    // 3. Print number of beats and mention uncompressed precision
-    // should print "  → Estimated beats: <beats>  → Precision factor: 1.0 (uncompressed audio)"
-
-    std::cout << "[WAVTrack::analyze_beatgrid] Analyzing beat grid for: " << title << std::endl;
-
     long long beats = (duration_seconds / 60.0) * bpm;
 
-    std::cout << "  → Estimated beats: " << beats << std::endl
-              << "  → Precision factor: 1 (uncompressed audio)" << std::endl;
+    std::cout << "  → Estimated beats: " << beats
+    << "  → Precision factor: 1 (uncompressed audio)" << std::endl;
 }
 
 double WAVTrack::get_quality_score() const
