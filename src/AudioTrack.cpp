@@ -74,7 +74,6 @@ AudioTrack &AudioTrack::operator=(const AudioTrack &other)
 #ifdef DEBUG
     std::cout << "AudioTrack copy assignment called for: " << other.title << std::endl;
 #endif
-    // Your code here...
 
     if (this != &other)
     {

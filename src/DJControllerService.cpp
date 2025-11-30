@@ -25,7 +25,7 @@ int DJControllerService::loadTrackToCache(AudioTrack &track)
 
     if (!clonedTrackPtr)
     {
-        std::cerr << "[ERROR] Track: " << track.get_title() << " failed to clone"; // which error to log (DEL)
+        std::cerr << "[ERROR] Track: " << track.get_title() << " failed to clone\n"; // which error to log (DEL)
         return 0;
     }
 
@@ -56,7 +56,7 @@ AudioTrack *DJControllerService::getTrackFromCache(const std::string &track_titl
     AudioTrack *trackPointer = cache.get(track_title); // nothing related to PointerWrapper? (DEL)
     if (trackPointer == nullptr)
     {
-        std::cerr << "[ERROR] Track: " << track_title << " faile to clone"; // which error to log (DEL)
+        std::cerr << "[ERROR] Track: " << track_title << " failed to clone\n"; // which error to log (DEL)
     }
     return trackPointer;
 }

@@ -326,6 +326,7 @@ void DJSession::load_selected_playlist(const std::string &selected_playlist)
         {
             std::cout << "\n--- Processing: " << title << " ---\n";
             stats.tracks_processed++;
+            load_track_to_controller(title);
             controller_service.displayCacheStatus();
             bool load_to_mixer_status = load_track_to_mixer_deck(title);
             mixing_service.displayDeckStatus();           
