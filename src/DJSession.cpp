@@ -326,10 +326,6 @@ void DJSession::load_selected_playlist(const std::string &selected_playlist)
         {
             std::cout << "\n--- Processing: " << title << " ---\n";
             stats.tracks_processed++;
-
-            // – update the cache statistics based on the return value
-            // does it happen in load_track_to_controller already? (DEL)
-            int load_to_controller_status = load_track_to_controller(title);
             controller_service.displayCacheStatus();
             bool load_to_mixer_status = load_track_to_mixer_deck(title);
             mixing_service.displayDeckStatus();           
