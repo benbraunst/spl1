@@ -126,7 +126,6 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
  */
 std::vector<std::string> DJLibraryService::getTrackTitles() const
 {
-     // check the * common solution (DEL)
     std::vector<AudioTrack*> tracks = playlist.getTracks();
     std::vector<std::string> titles;
     titles.reserve(tracks.size());

@@ -120,4 +120,8 @@ private:
      * @brief Print final session summary with statistics
      */
     void print_session_summary() const;
+
+    void reset_all_stats();
+
+    void load_selected_playlist(std::string selected_playlist);
 };
