@@ -84,7 +84,7 @@ int DJSession::load_track_to_controller(const std::string &track_name)
         stats.errors++;
         return 0;
     }
-    std::cerr << "[System] Loading track '" << track_name << "' to controller...\n";
+    std::cout << "[System] Loading track '" << track_name << "' to controller...\n";
 
     int loading_track_to_cache_status = controller_service.loadTrackToCache(*track);
 
@@ -101,6 +101,10 @@ int DJSession::load_track_to_controller(const std::string &track_name)
     case -1:
         stats.cache_misses++;
         stats.cache_evictions++;
+        break;
+    default:
+        std::cerr << "[ERROR] Unexpected cache status " << loading_track_to_cache_status << "\n";
+        stats.errors++;
         break;
     }
 
@@ -142,6 +146,11 @@ bool DJSession::load_track_to_mixer_deck(const std::string &track_title)
 
     case -1:
         std::cerr << "[ERROR] Track: " << track_title << " cannot be loaded into the deck\n";
+        stats.errors++;
+        return false;
+
+    default:
+        std::cerr << "[ERROR] Unexpected deck status " << load_track_to_deck_status << " for track: " << track_title << "\n";
         stats.errors++;
         return false;
     }
@@ -304,40 +313,33 @@ void DJSession::print_session_summary() const
     std::cout << "=== Session Complete ===" << std::endl;
 }
 
-void DJSession::load_selected_playlist(std::string selected_playlist){
+void DJSession::load_selected_playlist(const std::string &selected_playlist)
+{
     bool loading_status = load_playlist(selected_playlist);
     if (!loading_status)
     {
         std::cerr << "[ERROR] Failed to load playlist: " << selected_playlist << std::endl;
     }
-    for (std::string title : track_titles)
+    else
     {
-        std::cout << "\n-- Processing: " << title << " --";
-        stats.tracks_processed++;
-
-        // – update the cache statistics based on the return value
-        // does it happen in load_track_to_controller already? (DEL)
-        int load_to_controller_status = load_track_to_controller(title);
-
-        int load_to_mixer_status = load_track_to_mixer_deck(title);
-
-        if (load_to_mixer_status == -1)
+        for (const auto &title : track_titles)
         {
-            continue;
-        }
-    }
-    print_session_summary();
-    reset_all_stats();
-}
+            std::cout << "\n-- Processing: " << title << " --";
+            stats.tracks_processed++;
 
-void DJSession::reset_all_stats()
-{
-    stats.tracks_processed = 0;
-    stats.cache_hits = 0;
-    stats.cache_misses = 0;
-    stats.cache_evictions = 0;
-    stats.deck_loads_a = 0;
-    stats.deck_loads_b = 0;
-    stats.transitions = 0;
-    stats.errors = 0;
+            // – update the cache statistics based on the return value
+            // does it happen in load_track_to_controller already? (DEL)
+            int load_to_controller_status = load_track_to_controller(title);
+
+            bool load_to_mixer_status = load_track_to_mixer_deck(title);
+
+            if (!load_to_mixer_status)
+            {
+                continue;
+            }
+        }
+
+        print_session_summary();
+    }
+    stats = {};
 }
