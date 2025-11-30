@@ -337,5 +337,4 @@ void DJSession::load_selected_playlist(const std::string &selected_playlist)
         }
         print_session_summary();
     }
-    stats = {};
 }
