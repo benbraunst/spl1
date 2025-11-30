@@ -85,25 +85,25 @@ int DJSession::load_track_to_controller(const std::string &track_name)
         return 0;
     }
     std::cerr << "[System] Loading track '" << track_name << "' to controller...\n";
-
+    
     int loading_track_to_cache_status = controller_service.loadTrackToCache(*track);
 
     switch (loading_track_to_cache_status)
     {
-    case 1:
+        case 1:
         stats.cache_hits++;
         break;
-
-    case 0:
+        
+        case 0:
         stats.cache_misses++;
         break;
-
+        
     case -1:
         stats.cache_misses++;
         stats.cache_evictions++;
         break;
     }
-    
+
     return loading_track_to_cache_status;
 }
 
@@ -116,8 +116,36 @@ int DJSession::load_track_to_controller(const std::string &track_name)
 bool DJSession::load_track_to_mixer_deck(const std::string &track_title)
 {
     std::cout << "[System] Delegating track transfer to MixingEngineService for: " << track_title << std::endl;
-    // your implementation here
-    return false; // Placeholder
+    
+    AudioTrack *track = controller_service.getTrackFromCache(track_title);
+    
+    if (track == nullptr){
+        std::cerr << "[ERROR] Track: " << track_title << " not found in cache\n";
+        stats.errors++;
+        return false;
+    }
+    
+    int load_track_to_deck_status = mixing_service.loadTrackToDeck(*track);
+
+    switch (load_track_to_deck_status)
+    {
+        case 1:
+        stats.deck_loads_b++;
+        stats.transitions++;
+        break;
+        
+        case 0:
+        stats.deck_loads_a++;
+        stats.transitions++;
+        break;
+        
+        case -1:
+        std::cerr << "[ERROR] Track: " << track_title << " cannot be loaded into the deck\n";
+        stats.errors++;
+        return false;
+    }
+
+    return true;
 }
 
 /**

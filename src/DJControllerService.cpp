@@ -53,8 +53,6 @@ void DJControllerService::displayCacheStatus() const
  */
 AudioTrack *DJControllerService::getTrackFromCache(const std::string &track_title)
 {
-    // Your implementation here
-
     AudioTrack *trackPointer = cache.get(track_title); // nothing related to PointerWrapper? (DEL)
     if (trackPointer == nullptr)
     {
