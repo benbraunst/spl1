@@ -8,7 +8,7 @@
 #include <vector>
 
 DJLibraryService::DJLibraryService(const Playlist &playlist)
-    : playlist(playlist), library() {}
+    : playlist(playlist.get_name()), library() {}
 /**
  * @brief Load a playlist from track indices referencing the library
  * @param library_tracks Vector of track info from config
@@ -81,10 +81,9 @@ AudioTrack *DJLibraryService::findTrack(const std::string &track_title)
 void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
                                                const std::vector<int> &track_indices)
 {
-    // Your implementation here
 
     std::cout << "[INFO] Loading playlist: " << playlist_name << "\n";
-    playlist = *(new Playlist(playlist_name));
+    // playlist = *(new Playlist(playlist_name));
     int counter = 0;
 
     for (int index : track_indices)
