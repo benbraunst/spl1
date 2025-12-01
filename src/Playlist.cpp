@@ -19,6 +19,28 @@ Playlist::~Playlist() {
     #endif
 }
 
+Playlist &Playlist::operator=(Playlist &&other) noexcept
+{
+    if (this != &other)
+    {
+        PlaylistNode* current = head;
+        while (current != nullptr){
+            PlaylistNode* next = current->next;
+            delete current->track;
+            delete current;
+            current = next;
+        }
+
+        head = other.head;
+        playlist_name = std::move(other.playlist_name);
+        track_count = other.track_count;
+
+        other.head = nullptr;
+        other.track_count = 0;
+    }
+    return *this;
+}
+
 void Playlist::add_track(AudioTrack* track) {
     if (!track) {
         std::cout << "[Error] Cannot add null track to playlist" << std::endl;

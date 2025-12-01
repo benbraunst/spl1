@@ -47,7 +47,7 @@ public:
     Playlist(const Playlist &) = delete;
     Playlist &operator=(const Playlist &) = delete;
     Playlist(Playlist &&) = delete;
-    Playlist &operator=(Playlist &&) = delete;
+    Playlist &operator=(Playlist &&) noexcept;
 
     /**
      * Add a track to the playlist

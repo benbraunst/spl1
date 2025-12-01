@@ -83,7 +83,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
 {
 
     std::cout << "[INFO] Loading playlist: " << playlist_name << "\n";
-    // playlist = *(new Playlist(playlist_name));
+    playlist = Playlist(playlist_name);
     int counter = 0;
 
     for (int index : track_indices)
