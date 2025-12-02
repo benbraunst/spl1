@@ -119,7 +119,7 @@ std::vector<std::string> DJLibraryService::getTrackTitles() const
     titles.reserve(tracks.size());
 
     for (AudioTrack* track: tracks){
-        titles.push_back(track->get_title());
+        titles.insert(titles.begin(), track->get_title());
     }
 
     return titles; 
