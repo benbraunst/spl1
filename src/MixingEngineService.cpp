@@ -73,7 +73,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
         }
 
         // BPM Management:
-        if (decks[active_deck] != nullptr && auto_sync && !can_mix_tracks(clonedTrackPtr))
+        if (decks[active_deck] && auto_sync && !can_mix_tracks(clonedTrackPtr))
         {
             sync_bpm(clonedTrackPtr);
         }
@@ -85,13 +85,13 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
               << "' is now loaded on deck " << target_deck << std::endl;
 
     // (j)
-    if (decks[active_deck] != nullptr && active_deck != target_deck)
-    {
-        std::cout << "[Unload] Unloading previous deck " << active_deck
-                  << " (" << decks[active_deck]->get_title() << ")\n";
-        delete decks[active_deck];
-        decks[active_deck] = nullptr;
-    }
+    // if (decks[active_deck] != nullptr && active_deck != target_deck)
+    // {
+    //     std::cout << "[Unload] Unloading previous deck " << active_deck
+    //               << " (" << decks[active_deck]->get_title() << ")\n";
+    //     delete decks[active_deck];
+    //     decks[active_deck] = nullptr;
+    // }
 
     // (k)
     active_deck = target_deck;
