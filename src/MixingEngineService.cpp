@@ -20,7 +20,7 @@ MixingEngineService::MixingEngineService()
  */
 MixingEngineService::~MixingEngineService()
 {
-    std::cout << "[MixingEngineService] Cleaning up decks...\n";
+    std::cout << "[MixingEngineService] Cleaning up decks..." << std::endl;
     delete decks[0];
     delete decks[1];
 
@@ -51,32 +51,27 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     }
 
     size_t target_deck;
-    if (!decks[0] && !decks[1])
+    target_deck = 1 - active_deck;
+    std::cout << "[Deck Switch] Target deck: " << target_deck << std::endl;
+
+    clonedTrackPtr->load();
+    clonedTrackPtr->analyze_beatgrid();
+
+    if (decks[target_deck])
     {
-        target_deck = 0;
-        std::cout << "[Deck Switch] Target deck: " << target_deck << std::endl;
-        clonedTrackPtr->load();
-        clonedTrackPtr->analyze_beatgrid();
+        delete decks[target_deck];
+        decks[target_deck] = nullptr;
     }
-    else
+
+    // BPM Management:
+    if (decks[active_deck])
     {
-        target_deck = 1 - active_deck;
-        std::cout << "[Deck Switch] Target deck: " << target_deck << std::endl;
-
-        clonedTrackPtr->load();
-        clonedTrackPtr->analyze_beatgrid();
-
-        if (decks[target_deck])
-        {
-            delete decks[target_deck];
-            decks[target_deck] = nullptr;
-        }
-
-        // BPM Management:
-        if (decks[active_deck] && auto_sync && !can_mix_tracks(clonedTrackPtr))
-        {
+        if(!can_mix_tracks(clonedTrackPtr) && auto_sync){
             sync_bpm(clonedTrackPtr);
         }
+    }
+    else{
+        std::cout << "[Sync BPM] Cannot sync - one of the decks is empty.\n";
     }
 
     decks[target_deck] = clonedTrackPtr.release();
@@ -133,7 +128,7 @@ bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack> &track
         return false;
     }
 
-    if (decks[active_deck])
+    if (!decks[active_deck])
     {
         return false;
     }
