@@ -9,13 +9,24 @@
 
 DJLibraryService::DJLibraryService(const Playlist &playlist)
     : playlist(playlist.get_name()), library() {}
+
+/**
+ * @brief Deletes all the track pointers kept in the library vector before deleting the library service
+ */
+DJLibraryService::~DJLibraryService()
+{
+    for (AudioTrack *track : library)
+    {
+        delete track;
+    }
+}
+
 /**
  * @brief Load a playlist from track indices referencing the library
  * @param library_tracks Vector of track info from config
  */
 void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> &library_tracks)
 {
-    // Todo: Implement buildLibrary method
     int counter = 0;
     for (SessionConfig::TrackInfo track : library_tracks)
     {
@@ -68,11 +79,6 @@ Playlist &DJLibraryService::getPlaylist()
     return playlist;
 }
 
-/**
- * TODO: Implement findTrack method
- *
- * HINT: Leverage Playlist's find_track method
- */
 AudioTrack *DJLibraryService::findTrack(const std::string &track_title)
 {
     return playlist.find_track(track_title);
@@ -92,7 +98,8 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
         {
             std::cout << "[WARNING] Invalid track index: " << index << "\n";
         }
-        else{
+        else
+        {
             PointerWrapper<AudioTrack> track = library[index - 1]->clone();
             if (!track)
             {
@@ -114,13 +121,14 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
 
 std::vector<std::string> DJLibraryService::getTrackTitles() const
 {
-    std::vector<AudioTrack*> tracks = playlist.getTracks();
+    std::vector<AudioTrack *> tracks = playlist.getTracks();
     std::vector<std::string> titles;
     titles.reserve(tracks.size());
 
-    for (AudioTrack* track: tracks){
+    for (AudioTrack *track : tracks)
+    {
         titles.insert(titles.begin(), track->get_title());
     }
 
-    return titles; 
+    return titles;
 }

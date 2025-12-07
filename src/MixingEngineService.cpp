@@ -3,9 +3,6 @@
 #include <memory>
 #include <cmath>
 
-/**
- * TODO: Implement MixingEngineService constructor
- */
 MixingEngineService::MixingEngineService()
     : decks(),
       active_deck(1),
@@ -15,9 +12,6 @@ MixingEngineService::MixingEngineService()
     std::cout << "[MixingEngineService] Initialized with 2 empty decks.\n";
 }
 
-/**
- * TODO: Implement MixingEngineService destructor
- */
 MixingEngineService::~MixingEngineService()
 {
     std::cout << "[MixingEngineService] Cleaning up decks..." << std::endl;
@@ -29,7 +23,6 @@ MixingEngineService::~MixingEngineService()
 }
 
 /**
- * TODO: Implement loadTrackToDeck method
  * @param track: Reference to the track to be loaded
  * @return: Index of the deck where track was loaded, or -1 on failure
  */
@@ -66,11 +59,13 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     // BPM Management:
     if (decks[active_deck])
     {
-        if(!can_mix_tracks(clonedTrackPtr) && auto_sync){
+        if (!can_mix_tracks(clonedTrackPtr) && auto_sync)
+        {
             sync_bpm(clonedTrackPtr);
         }
     }
-    else{
+    else
+    {
         std::cout << "[Sync BPM] Cannot sync - one of the decks is empty.\n";
     }
 
@@ -79,7 +74,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     std::cout << "[Load Complete] '" << decks[target_deck]->get_title()
               << "' is now loaded on deck " << target_deck << std::endl;
 
-    // (j)
+    // (j) - Removes after new instructions and output
     // if (decks[active_deck] != nullptr && active_deck != target_deck)
     // {
     //     std::cout << "[Unload] Unloading previous deck " << active_deck
@@ -93,7 +88,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 
     std::cout << "[Active Deck] Switched to deck " << target_deck << "\n";
 
-    return active_deck; // consider casting to int (DEL)
+    return static_cast<int>(active_deck);
 }
 
 /**
@@ -114,9 +109,8 @@ void MixingEngineService::displayDeckStatus() const
 }
 
 /**
- * TODO: Implement can_mix_tracks method
  *
- * Check if two tracks can be mixed based on BPM difference.
+ * @brief Check if two tracks can be mixed based on BPM difference.
  *
  * @param track: Track to check for mixing compatibility
  * @return: true if BPM difference <= tolerance, false otherwise
@@ -140,7 +134,6 @@ bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack> &track
 }
 
 /**
- * TODO: Implement sync_bpm method
  * @param track: Track to synchronize with active deck
  */
 void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack> &track) const

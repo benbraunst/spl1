@@ -31,15 +31,11 @@ AudioTrack::AudioTrack(const std::string &title, const std::vector<std::string> 
 #endif
 }
 
-// ========== TODO: STUDENTS IMPLEMENT RULE OF 5 ==========
-
 AudioTrack::~AudioTrack()
 {
-// TODO: Implement the destructor
 #ifdef DEBUG
     std::cout << "AudioTrack destructor called for: " << title << std::endl;
 #endif
-    // Your code here...
     delete[] waveform_data;
     waveform_data = nullptr;
 }
@@ -52,11 +48,9 @@ AudioTrack::AudioTrack(const AudioTrack &other)
       waveform_data(nullptr),
       waveform_size(other.waveform_size)
 {
-// TODO: Implement the copy constructor
 #ifdef DEBUG
     std::cout << "AudioTrack copy constructor called for: " << other.title << std::endl;
 #endif
-    // Your code here...
     if (waveform_size > 0)
     {
         waveform_data = new double[waveform_size];
@@ -70,7 +64,6 @@ AudioTrack::AudioTrack(const AudioTrack &other)
 
 AudioTrack &AudioTrack::operator=(const AudioTrack &other)
 {
-// TODO: Implement the copy assignment operator
 #ifdef DEBUG
     std::cout << "AudioTrack copy assignment called for: " << other.title << std::endl;
 #endif
@@ -105,9 +98,8 @@ AudioTrack::AudioTrack(AudioTrack &&other) noexcept
       bpm(other.bpm),
       waveform_data(other.waveform_data),
       waveform_size(other.waveform_size)
-      
+
 {
-// TODO: Implement the move constructor
 #ifdef DEBUG
     std::cout << "AudioTrack move constructor called for: " << other.title << std::endl;
 #endif
@@ -118,8 +110,6 @@ AudioTrack::AudioTrack(AudioTrack &&other) noexcept
 
 AudioTrack &AudioTrack::operator=(AudioTrack &&other) noexcept
 {
-    // TODO: Implement the move assignment operator
-
 #ifdef DEBUG
     std::cout << "AudioTrack move assignment called for: " << other.title << std::endl;
 #endif

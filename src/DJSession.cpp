@@ -52,8 +52,6 @@ bool DJSession::load_playlist(const std::string &playlist_name)
 }
 
 /**
- * TODO: Implement load_track_to_controller method
- *
  * REQUIREMENTS:
  * 1. Track Retrieval
  *    - Find track in library using track name
@@ -112,8 +110,6 @@ int DJSession::load_track_to_controller(const std::string &track_name)
 }
 
 /**
- * TODO: Implement load_track_to_mixer_deck method
- *
  * @param track_title: Title of track to load to mixer
  * @return: Whether track was successfully loaded to a deck
  */
@@ -329,7 +325,7 @@ void DJSession::load_selected_playlist(const std::string &selected_playlist)
             load_track_to_controller(title);
             controller_service.displayCacheStatus();
             bool load_to_mixer_status = load_track_to_mixer_deck(title);
-            mixing_service.displayDeckStatus();           
+            mixing_service.displayDeckStatus();
             if (!load_to_mixer_status)
             {
                 continue;

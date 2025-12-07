@@ -6,34 +6,31 @@
 
 DJControllerService::DJControllerService(size_t cache_size)
     : cache(cache_size) {}
-/**
- * TODO: Implement loadTrackToCache method
- */
+
 int DJControllerService::loadTrackToCache(AudioTrack &track)
 {
-    // Your implementation here
-
-    // HIT case
-    if (cache.contains(track.get_title()))
+    if (cache.contains(track.get_title())) // HIT case
     {
-        cache.get(track.get_title()); // validate (DEL)
+        cache.get(track.get_title());
         return 1;
     }
 
-    // MISS case
-    PointerWrapper<AudioTrack> clonedTrackPtr = track.clone(); // validate (DEL)
-
-    if (!clonedTrackPtr)
+    else // MISS case
     {
-        std::cerr << "[ERROR] Track: " << track.get_title() << " failed to clone\n"; // which error to log (DEL)
-        return 0;
+        PointerWrapper<AudioTrack> clonedTrackPtr = track.clone();
+
+        if (!clonedTrackPtr)
+        {
+            std::cerr << "[ERROR] Track: " << track.get_title() << " failed to clone for cache loading\n";
+            return 0;
+        }
+
+        clonedTrackPtr->load();
+        clonedTrackPtr->analyze_beatgrid();
+
+        bool evicted = cache.put(std::move(clonedTrackPtr));
+        return evicted ? -1 : 0;
     }
-
-    clonedTrackPtr->load();
-    clonedTrackPtr->analyze_beatgrid();
-
-    bool evicted = cache.put(std::move(clonedTrackPtr));
-    return evicted ? -1 : 0;
 }
 
 void DJControllerService::set_cache_size(size_t new_size)
@@ -48,15 +45,12 @@ void DJControllerService::displayCacheStatus() const
     std::cout << "====================\n";
 }
 
-/**
- * TODO: Implement getTrackFromCache method
- */
 AudioTrack *DJControllerService::getTrackFromCache(const std::string &track_title)
 {
-    AudioTrack *trackPointer = cache.get(track_title); // nothing related to PointerWrapper? (DEL)
+    AudioTrack *trackPointer = cache.get(track_title);
     if (trackPointer == nullptr)
     {
-        std::cerr << "[ERROR] Track: " << track_title << " failed to clone\n"; // which error to log (DEL)
+        std::cerr << "[ERROR] Track: " << track_title << " not found in Cache\n";
     }
     return trackPointer;
 }

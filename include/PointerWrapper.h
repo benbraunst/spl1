@@ -32,12 +32,6 @@ public:
      */
     explicit PointerWrapper(T *p) : ptr(p) {}
 
-    /**
-     * TODO: Implement destructor
-     * HINT: What should happen to the wrapped pointer when the wrapper is destroyed?
-     * Think about ownership and resource management.
-     * Is the default destructor sufficient here?
-     */
     ~PointerWrapper()
     {
         delete ptr;
@@ -59,28 +53,17 @@ public:
 
     // ========== MOVE OPERATIONS (STUDENTS IMPLEMENT) ==========
 
-    /**
-     * TODO: Implement move constructor
-     * HINT: How should ownership transfer from one wrapper to another?
-     * What should happen to the source wrapper after the move?
-     */
     PointerWrapper(PointerWrapper &&other) noexcept
         : ptr(other.ptr)
     {
         other.ptr = nullptr;
     }
 
-    /**
-     * TODO: Implement move assignment operator
-     * HINT: Handle cleanup of current resource and ownership transfer
-     * Don't forget about self-assignment!
-     */
     PointerWrapper &operator=(PointerWrapper &&other) noexcept
     {
         if (this != &other)
         {
             delete ptr;
-
             ptr = other.ptr;
             other.ptr = nullptr;
         }
@@ -89,12 +72,6 @@ public:
     }
 
     // ========== ACCESS OPERATIONS ==========
-
-    /**
-     * TODO: Implement dereference operator
-     * HINT: How do you access the object that the wrapper points to? Is this operation implementation complete?
-     * @throws std::runtime_error if ptr is null
-     */
 
     T &operator*() const
     {
@@ -105,11 +82,6 @@ public:
         return *ptr;
     };
 
-    /**
-     * TODO: Implement arrow operator
-     * HINT: How do you access members of the wrapped object?
-     * What safety checks should you perform?
-     */
     T *operator->() const
     {
         if (!ptr)
@@ -119,12 +91,6 @@ public:
         return ptr;
     }
 
-    /**
-     * TODO: Implement get() function
-     * HINT: Sometimes you need access to the raw pointer without changing ownership
-     * What should this function return?
-     * @throws std::runtime_error if ptr is null
-     */
     T *get() const
     {
         return ptr;
@@ -132,11 +98,6 @@ public:
 
     // ========== OWNERSHIP MANAGEMENT ==========
 
-    /**
-     * TODO: Implement release() function
-     * HINT: What does "release" mean in terms of ownership?
-     * Should the wrapper still own the pointer after calling release()?
-     */
     T *release()
     {
         T *temp = ptr;
@@ -144,11 +105,6 @@ public:
         return temp;
     }
 
-    /**
-     * TODO: Implement reset() function
-     * HINT: How do you replace the currently wrapped pointer?
-     * What should happen to the old pointer?
-     */
     void reset(T *new_ptr = nullptr)
     {
         if (ptr != new_ptr)
@@ -160,11 +116,6 @@ public:
 
     // ========== UTILITY FUNCTIONS ==========
 
-    /**
-     * TODO: Implement boolean conversion operator
-     * HINT: When should a wrapper be considered "true" or "false"?
-     * Why might the explicit keyword be important here?
-     */
     explicit operator bool() const
     {
         return ptr != nullptr;
@@ -193,17 +144,9 @@ PointerWrapper<T> make_pointer_wrapper(Args &&...args)
     return PointerWrapper<T>(new T(std::forward<Args>(args)...));
 }
 
-/**
- * TODO: Implement swap for PointerWrapper
- * HINT: How can you swap two wrapper objects?
- * Why might this be useful?
- */
 template <typename T>
 void swap(PointerWrapper<T> &lhs, PointerWrapper<T> &rhs) noexcept
 {
-    // TODO: Implement global swap function
-    // HINT: You can use the member swap function
-    // your code here...
     lhs.swap(rhs);
 }
 
