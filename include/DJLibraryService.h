@@ -17,6 +17,11 @@ public:
     DJLibraryService(): playlist(), library(){};
     ~DJLibraryService();
 
+    DJLibraryService(const DJLibraryService &) = delete;
+    DJLibraryService &operator=(const DJLibraryService &) = delete;
+    DJLibraryService(DJLibraryService &&) = delete;
+    DJLibraryService &operator=(DJLibraryService &&) = delete;
+
     /**
      * @brief Build the track library from parsed config data
      * @param library_tracks Vector of track info from config
